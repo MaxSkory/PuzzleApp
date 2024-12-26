@@ -47,11 +47,12 @@ public class Graph {
             return prevChain;
         }
         node.setVisited(true);
-        List<String> possibleChains = new ArrayList<>(node.getAdjacentNodes().size());
-        prevChain += " " + node.getName();
+        List<String> possibleChains = new ArrayList<>(node.getAdjacentNodes().size() + 1);
+        String chain = prevChain + " " + node.getName();
+        possibleChains.add(chain);
         for (Node adjNode : node.getAdjacentNodes()) {
-            String chain = getLongestChain(adjNode, prevChain);
-            possibleChains.add(chain);
+            String nextChain = getLongestChain(adjNode, chain);
+            possibleChains.add(nextChain);
         }
         node.setVisited(false);
         return possibleChains.stream().max(Comparator.comparingInt(String::length)).orElse("");
